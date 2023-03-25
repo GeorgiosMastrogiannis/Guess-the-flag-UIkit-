@@ -51,22 +51,19 @@ class ViewController: UIViewController {
         let ac = UIAlertController(title: title, message: "Your score is \(score).", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Continue", style: .default, handler: askQuestions))
         
-        if let presentedViewController = presentedViewController {
-            presentedViewController.dismiss(animated: true) {
-                self.present(ac, animated: true)
-            }
-        } else {
-            present(ac, animated: true)
-        }
-        
-        if noOfQuestions == 10 {
-            let roundFinished = UIAlertController(title: "You have answered 10 questions!", message: "Your score is: \(score)", preferredStyle: .alert)
+        if noOfQuestions >= 3 {
+            ac.dismiss(animated: true)
+            
+            let roundFinished = UIAlertController(title: "Round finished!", message: "You have answered \(noOfQuestions) questions!", preferredStyle: .alert)
             roundFinished.addAction(UIAlertAction(title: "OK", style: .default, handler: { _ in
                 self.noOfQuestions = 0
                 self.score = 0
                 self.askQuestions(action: nil)
             }))
-            present(roundFinished, animated: true, completion: nil)
+            present(roundFinished, animated: true, completion: { print("presented") })
+            print("exited")
+        } else {
+            present(ac, animated: true)
         }
         
         noOfQuestions += 1
